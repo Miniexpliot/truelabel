@@ -173,7 +173,7 @@ const App = () => {
         <div className="orb orb-3"></div>
       </div>
 
-      <div className={`w-full max-w-md mx-auto h-screen flex flex-col bg-transparent text-slate-200 overflow-y-auto overflow-x-hidden p-6 relative z-10 ${oneHandedMode ? 'one-handed-mode' : ''}`}>
+      <div className="w-full max-w-md mx-auto h-screen flex flex-col bg-transparent text-slate-200 overflow-y-auto overflow-x-hidden p-6 relative z-10 transition-all duration-300" style={{ paddingTop: oneHandedMode ? '25vh' : '1.5rem' }}>
         
         {/* Header */}
         <div className="text-center py-6 pt-8 mb-4 relative z-10">
