@@ -14,24 +14,10 @@ const App = () => {
   const [appState, setAppState] = useState('idle'); // idle, processing, results
   const [scanResult, setScanResult] = useState(null);
   const [streak, setStreak] = useState(0);
-  const [oneHandedMode, setOneHandedMode] = useState(false);
 
   useEffect(() => {
     const savedStreak = localStorage.getItem('true_label_streak');
     if (savedStreak) setStreak(parseInt(savedStreak));
-
-    const checkSettings = () => {
-      const savedSettings = localStorage.getItem('true_label_settings');
-      if (savedSettings) {
-        const settings = JSON.parse(savedSettings);
-        setOneHandedMode(settings.oneHandedMode || false);
-      }
-    };
-    checkSettings();
-    window.addEventListener('storage', checkSettings); // Poor man's global state sync
-    // In a real app we'd use context, but for now we poll
-    const interval = setInterval(checkSettings, 1000);
-    return () => clearInterval(interval);
   }, []);
 
   const saveToHistoryAndStreak = (result) => {
@@ -173,7 +159,7 @@ const App = () => {
         <div className="orb orb-3"></div>
       </div>
 
-      <div className="w-full max-w-md mx-auto h-screen flex flex-col bg-transparent text-slate-200 overflow-y-auto overflow-x-hidden p-6 relative z-10 transition-all duration-300" style={{ paddingTop: oneHandedMode ? '25vh' : '1.5rem' }}>
+      <div className="w-full max-w-md mx-auto h-screen flex flex-col bg-transparent text-slate-200 overflow-y-auto overflow-x-hidden p-6 relative z-10 transition-all duration-300">
         
         {/* Header */}
         <div className="text-center py-6 pt-8 mb-4 relative z-10">

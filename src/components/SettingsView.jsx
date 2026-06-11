@@ -6,8 +6,7 @@ const SettingsView = () => {
     dyslexiaFont: false,
     highContrast: false,
     veganMode: false,
-    allergyAlerts: false,
-    oneHandedMode: false
+    allergyAlerts: false
   });
 
   useEffect(() => {
@@ -77,7 +76,6 @@ const SettingsView = () => {
       <h2 className="text-lg font-semibold text-slate-300 mb-3">Accessibility & Layout</h2>
       <Toggle label="Dyslexia Font" icon={Type} stateKey="dyslexiaFont" description="Easier to read character shapes" />
       <Toggle label="High Contrast" icon={Moon} stateKey="highContrast" description="Maximum readability for low vision" />
-      <Toggle label="One-Handed Mode" icon={Hand} stateKey="oneHandedMode" description="Shifts UI down for easy thumb reach" />
 
       <h2 className="text-lg font-semibold text-slate-300 mb-3 mt-2">Personalization Engine</h2>
       <Toggle label="Vegan Strict Mode" icon={Leaf} stateKey="veganMode" description="Flag all animal by-products aggressively" />
