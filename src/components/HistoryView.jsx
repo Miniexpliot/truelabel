@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Clock, AlertTriangle, Trash2 } from 'lucide-react';
 
-const HistoryView = () => {
+const HistoryView = ({ setActiveTab }) => {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
@@ -28,10 +28,18 @@ const HistoryView = () => {
 
   if (history.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center -mt-10 animation-fade-in opacity-50">
-        <Clock size={48} className="mb-4" />
-        <h2 className="text-xl font-medium">No Scan History</h2>
-        <p className="text-sm mt-2 text-center max-w-[200px]">Items you scan will appear here.</p>
+      <div role="status" className="flex-1 flex flex-col items-center justify-center -mt-10 animation-fade-in opacity-80">
+        <Clock size={48} className="mb-4 text-slate-500" aria-hidden="true" />
+        <h3 className="text-xl font-medium text-slate-200">No Scan History</h3>
+        <p className="text-sm mt-2 text-center max-w-[220px] text-slate-400 mb-6">
+          Your journey to uncover food truths starts here.
+        </p>
+        <button 
+          onClick={() => setActiveTab('scanner')}
+          className="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold py-2 px-6 rounded-full transition-colors flex items-center gap-2"
+        >
+          Start Scanning
+        </button>
       </div>
     );
   }

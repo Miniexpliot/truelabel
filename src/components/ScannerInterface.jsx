@@ -34,7 +34,7 @@ const ScannerInterface = ({ onCapture }) => {
       <div className="relative group cursor-pointer mt-16">
         <div className="absolute inset-0 bg-emerald-500 rounded-full blur-2xl opacity-20 group-hover:opacity-40 animate-pulse-slow transition-opacity duration-500"></div>
         <div className="relative w-48 h-48 rounded-full border border-emerald-400/50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md shadow-[inset_0_4px_30px_rgba(16,185,129,0.3),_0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden animate-pulse-slow">
-          <Camera size={64} className="text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+          <Camera size={64} className="text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]" aria-hidden="true" />
           
           <input 
             type="file" 

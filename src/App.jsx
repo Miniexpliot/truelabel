@@ -189,7 +189,7 @@ const App = () => {
             </>
           )}
 
-          {activeTab === 'history' && <HistoryView />}
+          {activeTab === 'history' && <HistoryView setActiveTab={setActiveTab} />}
           {activeTab === 'settings' && <SettingsView />}
           {activeTab === 'profile' && <ProfileView />}
           {activeTab === 'leaderboard' && <LeaderboardView />}

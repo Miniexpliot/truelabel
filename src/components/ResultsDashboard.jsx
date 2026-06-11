@@ -135,7 +135,7 @@ const ResultsDashboard = ({ scanResult, onReset }) => {
           onClick={shareRoast}
           className="flex-1 glass-panel py-3 rounded-xl flex items-center justify-center gap-2 text-cyan-400 font-bold shadow-lg hover:bg-slate-800/80 active:scale-95 transition-all"
         >
-          <Share2 size={18} /> Share Roast
+          <Share2 size={18} aria-hidden="true" /> Share Roast
         </button>
       </div>
 
