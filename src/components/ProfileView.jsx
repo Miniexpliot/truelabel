@@ -40,8 +40,13 @@ const ProfileView = () => {
   };
 
   const handleSaveName = () => {
+    if (userName.trim() === "") {
+      setUserName("Truth Crusader"); // Fallback
+      localStorage.setItem('true_label_username', "Truth Crusader");
+    } else {
+      localStorage.setItem('true_label_username', userName.trim());
+    }
     setIsEditing(false);
-    localStorage.setItem('true_label_username', userName);
   };
 
   return (
@@ -60,7 +65,8 @@ const ProfileView = () => {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
-                className="bg-transparent border-none outline-none text-xl font-bold text-white text-center w-40 py-1"
+                maxLength={12}
+                className="bg-transparent border-none outline-none text-xl font-bold text-white text-center w-36 py-1"
                 autoFocus
               />
               <button onClick={handleSaveName} className="text-emerald-400 p-1">
