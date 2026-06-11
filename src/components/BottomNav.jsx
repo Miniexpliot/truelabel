@@ -9,7 +9,9 @@ import LanguageSwitcher from './UI/LanguageSwitcher';
  * Visible on screens <640px (Tailwind "sm").
  * Mirrors the tabs used in the app state.
  */
-const BottomNav = ({ activeTab, setActiveTab }) => {
+const BottomNav = ({ activeTab, setActiveTab, onCapture }) => {
+  const fileInputRef = React.useRef(null);
+
   return (
     <div className="fixed bottom-0 left-0 w-full bg-slate-900/60 backdrop-blur-xl border-t border-slate-700/50 z-50 px-2 py-2 pb-6 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.5)] block sm:hidden">
       <div className="max-w-md mx-auto w-full flex justify-between items-center px-2">
@@ -35,7 +37,10 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
         </button>
         {/* Scanner (central button) */}
         <button
-          onClick={() => setActiveTab('scanner')}
+          onClick={() => {
+            setActiveTab('scanner');
+            fileInputRef.current?.click();
+          }}
           aria-label="Open Scanner"
           aria-current={activeTab === 'scanner' ? 'page' : undefined}
           className="relative -mt-6 mx-2"
@@ -48,6 +53,14 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
             <Camera size={26} className="text-white" aria-hidden="true" />
           </div>
         </button>
+        <input 
+          ref={fileInputRef}
+          type="file" 
+          accept="image/*" 
+          capture="environment" 
+          onChange={onCapture}
+          className="hidden" 
+        />
         {/* Leaderboard */}
         <button
           onClick={() => setActiveTab('leaderboard')}

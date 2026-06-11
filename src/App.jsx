@@ -162,28 +162,12 @@ const App = () => {
       </div>
 
       <div className="w-full max-w-md mx-auto h-screen flex flex-col bg-transparent text-slate-200 overflow-y-auto overflow-x-hidden p-6 relative z-10 transition-all duration-300">
-        
-        {/* Header */}
-        <div className="text-center py-6 pt-8 mb-4 relative z-10">
-          <h1 className="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-emerald-300 via-cyan-300 to-emerald-300 bg-[length:200%_auto] animate-[pulse_3s_ease-in-out_infinite] bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(52,211,153,0.3)]">
-            True Label
-          </h1>
-          <p className="text-slate-300 text-sm tracking-[0.3em] uppercase mt-2 font-medium">Exposed</p>
-          
-          {/* Streak Counter */}
-          {streak > 0 && (
-            <div className="absolute top-8 right-0 flex items-center gap-1.5 bg-slate-800/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-slate-700 shadow-[0_0_15px_rgba(249,115,22,0.2)] animate-pulse-slow">
-              <span className="text-sm font-bold text-orange-400">{streak}</span>
-              <Flame size={16} className="text-orange-500 drop-shadow-[0_0_5px_rgba(249,115,22,0.8)]" />
-            </div>
-          )}
-        </div>
 
         {/* Main Content Area */}
         <div className="flex-1 flex flex-col relative z-0">
           {activeTab === 'scanner' && (
             <>
-              {appState === 'idle' && <ScannerInterface onCapture={handleImageCapture} />}
+              {appState === 'idle' && <ScannerInterface />}
               {appState === 'processing' && <ProcessingState />}
               {appState === 'results' && scanResult && (
                 <ResultsDashboard scanResult={scanResult} onReset={handleReset} />
@@ -206,6 +190,7 @@ const App = () => {
               if (appState === 'results') handleReset();
               setActiveTab(tab);
             }}
+            onCapture={handleImageCapture}
           />
         </div>
 
@@ -216,6 +201,7 @@ const App = () => {
             if (appState === 'results') handleReset();
             setActiveTab(tab);
           }}
+          onCapture={handleImageCapture}
         />
 
       </div>

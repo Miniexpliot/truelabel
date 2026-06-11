@@ -1,54 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { Camera, Lightbulb } from 'lucide-react';
+import React from 'react';
+import { Camera } from 'lucide-react';
 
-const ScannerInterface = ({ onCapture }) => {
-  const [dailyFact, setDailyFact] = useState("");
-
-  const facts = [
-    "Maltodextrin spikes blood sugar faster than actual table sugar.",
-    "Red 40 is derived from petroleum and linked to hyperactivity.",
-    "'Natural Flavors' can legally contain up to 100 different synthetic chemicals.",
-    "Palm oil harvesting causes mass deforestation and is often hidden as 'vegetable oil'."
-  ];
-
-  useEffect(() => {
-    // Pick a daily fact based on day of year to keep it consistent per day
-    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-    setDailyFact(facts[dayOfYear % facts.length]);
-  }, []);
-
+/**
+ * ScannerInterface rendering a screen-filling camera viewfinder.
+ * The big center camera button is now a visual centerpiece,
+ * and the actual file capture is triggered from the bottom nav bar.
+ */
+const ScannerInterface = () => {
   return (
-    <div className="flex-1 flex flex-col items-center justify-center -mt-10 animation-fade-in relative z-10">
+    <div className="absolute inset-0 flex flex-col items-center justify-center animation-fade-in scanner-grid overflow-hidden z-10 pb-20">
       
-      {/* Ingredient of the Day Widget */}
-      <div className="absolute top-0 w-full glass-panel p-3 rounded-xl flex items-start gap-3 opacity-90 animate-slide-up">
-        <div className="bg-amber-500/20 p-2 rounded-lg">
-          <Lightbulb size={18} className="text-amber-400" />
-        </div>
-        <div>
-          <h4 className="text-xs font-bold text-amber-300 uppercase tracking-wider mb-0.5">Did you know?</h4>
-          <p className="text-xs text-slate-300 leading-tight">{dailyFact}</p>
+      {/* Laser Scanning Line */}
+      <div className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent shadow-[0_0_15px_rgba(52,211,153,0.8)] animate-scan-sweep pointer-events-none"></div>
+
+      {/* Corner Viewfinder Brackets */}
+      <div className="absolute top-6 left-6 w-8 h-8 border-t-2 border-l-2 border-emerald-500/50 rounded-tl-lg pointer-events-none"></div>
+      <div className="absolute top-6 right-6 w-8 h-8 border-t-2 border-r-2 border-emerald-500/50 rounded-tr-lg pointer-events-none"></div>
+      <div className="absolute bottom-28 left-6 w-8 h-8 border-b-2 border-l-2 border-emerald-500/50 rounded-bl-lg pointer-events-none"></div>
+      <div className="absolute bottom-28 right-6 w-8 h-8 border-b-2 border-r-2 border-emerald-500/50 rounded-br-lg pointer-events-none"></div>
+
+      {/* Visual Centerpiece Graphic */}
+      <div className="relative group">
+        <div className="absolute inset-0 bg-emerald-500 rounded-full blur-2xl opacity-10 animate-pulse-slow"></div>
+        <div className="relative w-40 h-40 rounded-full border border-emerald-400/30 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm shadow-[inset_0_4px_20px_rgba(16,185,129,0.1)] overflow-hidden">
+          <Camera size={48} className="text-emerald-500/50" aria-hidden="true" />
         </div>
       </div>
 
-      <div className="relative group cursor-pointer mt-16">
-        <div className="absolute inset-0 bg-emerald-500 rounded-full blur-2xl opacity-20 group-hover:opacity-40 animate-pulse-slow transition-opacity duration-500"></div>
-        <div className="relative w-48 h-48 rounded-full border border-emerald-400/50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md shadow-[inset_0_4px_30px_rgba(16,185,129,0.3),_0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden animate-pulse-slow">
-          <Camera size={64} className="text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]" aria-hidden="true" />
-          
-          <input 
-            type="file" 
-            accept="image/*" 
-            capture="environment" 
-            onChange={onCapture}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
-            aria-label="Scan food label"
-          />
-        </div>
-      </div>
-      <h2 className="mt-8 text-xl font-medium text-slate-300 drop-shadow-md">Tap to Scan Label</h2>
-      <p className="mt-2 text-slate-400 text-center max-w-[250px] text-sm font-light">
-        Uncover the brutal truth behind packaged food.
+      <h2 className="mt-8 text-lg font-semibold tracking-wider text-emerald-400 uppercase drop-shadow-md">Scanner Active</h2>
+      <p className="mt-2 text-slate-400 text-center max-w-[280px] text-sm font-light">
+        Tap the <strong className="text-emerald-400">bottom camera icon</strong> in the nav bar to scan a food label.
       </p>
     </div>
   );
