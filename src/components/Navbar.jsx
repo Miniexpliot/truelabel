@@ -59,22 +59,6 @@ const Navbar = ({ activeTab, setActiveTab }) => {
           <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg>
           <span className="text-[9px] font-medium uppercase tracking-wider">Library</span>
         </button>
-        {/* Theme & Language */}
-        <div className="flex items-center gap-2 ml-2">
-          <ThemeToggle />
-          <LanguageSwitcher />
-        </div>
-
-        <button 
-          onClick={() => setActiveTab('settings')}
-          aria-label="Settings"
-          aria-current={activeTab === 'settings' ? 'page' : undefined}
-          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'settings' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
-        >
-          <Settings size={22} aria-hidden="true" />
-          <span className="text-[9px] font-medium uppercase tracking-wider">Config</span>
-        </button>
-
       </div>
     </div>
   );
