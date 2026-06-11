@@ -4,15 +4,21 @@ import { User, Shield, Target, Flame, Edit2, Check } from 'lucide-react';
 const ProfileView = () => {
   const [stats, setStats] = useState({ totalScans: 0, avgScore: 0, badScans: 0, streak: 0 });
   const [userName, setUserName] = useState("Truth Crusader");
+  const [avatar, setAvatar] = useState("🕵️");
   const [isEditing, setIsEditing] = useState(false);
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
   const inputRef = useRef(null);
+
+  const avatars = ["🕵️", "🥗", "🧪", "🦸", "🍊", "🔍", "🌾"];
 
   useEffect(() => {
     const savedHistory = localStorage.getItem('true_label_history');
     const savedStreak = localStorage.getItem('true_label_streak');
     const savedName = localStorage.getItem('true_label_username');
+    const savedAvatar = localStorage.getItem('true_label_avatar');
     
     if (savedName) setUserName(savedName);
+    if (savedAvatar) setAvatar(savedAvatar);
     
     let totalScans = 0;
     let avgScore = 0;
@@ -49,12 +55,41 @@ const ProfileView = () => {
     setIsEditing(false);
   };
 
+  const handleSelectAvatar = (av) => {
+    setAvatar(av);
+    localStorage.setItem('true_label_avatar', av);
+    setShowAvatarPicker(false);
+  };
+
   return (
     <div className="flex-1 flex flex-col gap-6 pb-28 pt-4 animation-fade-in">
       <div className="text-center mb-2">
-        <div className="w-20 h-20 bg-slate-800 rounded-full mx-auto mb-3 flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.3)] border-2 border-cyan-400">
-          <User size={40} className="text-cyan-400" />
+        <div className="relative w-24 h-24 mx-auto mb-3">
+          <button 
+            onClick={() => setShowAvatarPicker(!showAvatarPicker)}
+            className="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(34,211,238,0.3)] border-2 border-cyan-400 text-4xl hover:scale-105 active:scale-95 transition-all"
+            aria-label="Change Avatar"
+          >
+            {avatar}
+          </button>
+          <div className="absolute -bottom-1 -right-1 bg-slate-900 border border-slate-700 p-1.5 rounded-full text-slate-400">
+            <Edit2 size={12} />
+          </div>
         </div>
+
+        {showAvatarPicker && (
+          <div className="glass-panel p-3 mb-4 rounded-xl flex justify-center gap-2 max-w-sm mx-auto animate-fade-in">
+            {avatars.map((av) => (
+              <button
+                key={av}
+                onClick={() => handleSelectAvatar(av)}
+                className={`text-2xl p-1.5 rounded hover:bg-slate-700/50 transition-colors ${avatar === av ? 'bg-cyan-500/20 border border-cyan-400/40' : ''}`}
+              >
+                {av}
+              </button>
+            ))}
+          </div>
+        )}
         
         <div className="flex items-center justify-center gap-2 mb-1">
           {isEditing ? (
@@ -65,8 +100,8 @@ const ProfileView = () => {
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSaveName()}
-                maxLength={12}
-                className="bg-transparent border-none outline-none text-xl font-bold text-white text-center w-36 py-1"
+                maxLength={30}
+                className="bg-transparent border-none outline-none text-xl font-bold text-white text-center w-56 py-1"
                 autoFocus
               />
               <button onClick={handleSaveName} className="text-emerald-400 p-1">

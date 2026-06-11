@@ -74,6 +74,7 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
             shareRoast();
           }}
           onIngredientClick={handleIngredientClick}
+          onPlayAudio={playAudio}
         />
         {scanResult.deception_score >= 30 && (
           <div className="glass-panel bg-emerald-900/10 border-emerald-500/30 p-5 rounded-2xl shadow-lg relative overflow-hidden animate-slide-up mx-2" style={{ animationDelay: '300ms' }}>

@@ -1,6 +1,6 @@
 // src/components/UI/ResultCard.jsx
 import React from 'react';
-import { Share2, Download } from 'lucide-react';
+import { Share2, Download, Volume2 } from 'lucide-react';
 
 /**
  * Reusable card for displaying scan results or history entries.
@@ -12,6 +12,7 @@ import { Share2, Download } from 'lucide-react';
  * - onExport: function – callback when export button is clicked
  * - onShare: function – callback when share button is clicked
  * - onIngredientClick: function – callback when an ingredient chip is clicked
+ * - onPlayAudio: function – callback when play audio button is clicked
  */
 export default function ResultCard({
   title = "Scan Result",
@@ -21,6 +22,7 @@ export default function ResultCard({
   onExport,
   onShare,
   onIngredientClick,
+  onPlayAudio,
 }) {
   const getScoreColor = (s) => {
     if (s < 30) return "text-emerald-400";
@@ -65,6 +67,15 @@ export default function ResultCard({
             aria-label="Share"
           >
             <Share2 size={16} aria-hidden="true" /> Share
+          </button>
+        )}
+        {onPlayAudio && (
+          <button
+            onClick={onPlayAudio}
+            className="flex items-center gap-1 text-cyan-400 hover:text-cyan-300 ml-auto"
+            aria-label="Hear Roast"
+          >
+            <Volume2 size={16} aria-hidden="true" /> Hear Roast
           </button>
         )}
       </div>

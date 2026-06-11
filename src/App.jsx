@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Flame } from 'lucide-react';
 import ScannerInterface from './components/ScannerInterface';
 import ProcessingState from './components/ProcessingState';
-import ResultsDashboard from './components/ResultsDashboard';
+import ResultsDashboard from './components/NewResultsDashboard';
 import HistoryView from './components/HistoryView';
 import SettingsView from './components/SettingsView';
 import ProfileView from './components/ProfileView';
 import LeaderboardView from './components/LeaderboardView';
+import LibraryView from './components/LibraryView';
+import Navbar from './components/Navbar';
 import BottomNav from './components/BottomNav';
 
 const App = () => {
@@ -193,6 +195,7 @@ const App = () => {
           {activeTab === 'settings' && <SettingsView />}
           {activeTab === 'profile' && <ProfileView />}
           {activeTab === 'leaderboard' && <LeaderboardView />}
+          {activeTab === 'library' && <LibraryView />}
         </div>
 
         {/* Global Bottom Navigation - desktop */}
