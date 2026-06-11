@@ -7,7 +7,7 @@ import HistoryView from './components/HistoryView';
 import SettingsView from './components/SettingsView';
 import ProfileView from './components/ProfileView';
 import LeaderboardView from './components/LeaderboardView';
-import Navbar from './components/Navbar';
+import BottomNav from './components/BottomNav';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('scanner'); // 'scanner', 'history', 'settings', 'profile', 'leaderboard'
@@ -64,7 +64,7 @@ const App = () => {
     if (settings.veganMode) {
       // Force a violation if not already bad
       data.deception_score = 100;
-      data.brutal_truth_hinglish = "🚨 VEGAN VIOLATION: Gelatin and Milk Solids detected! Yeh product '100% Veg' claim karta hai, par isme animal products hain!";
+      data.brutal_truth_hinglish = "🚨 VEGAN VIOLATION: Gelatin and Milk Solids detected! This product claims '100% Veg' but contains animal ingredients.";
       data.offending_ingredients = ["Gelatin (Animal Derived)", "Milk Solids", ...data.offending_ingredients];
     }
     
@@ -118,23 +118,23 @@ const App = () => {
       if (rand < 0.1) {
         mockData = {
           deception_score: 15,
-          brutal_truth_hinglish: "Bhai wah! Isme sach mein aam hai aur cheeni bhi kam hai. Good choice, isko bindass peeyo.",
+          brutal_truth_hinglish: "Great choice! This product contains real mango and reduced sugar. Enjoy it freely.",
           offending_ingredients: [],
           desi_swap: "N/A"
         };
       } else if (rand > 0.9) {
         mockData = {
           deception_score: 95,
-          brutal_truth_hinglish: "SCAM ALERT! Yeh poora nakli item hai. 1% fruit pulp aur 99% factory waste. Turant dustbin mein dalo!",
+          brutal_truth_hinglish: "SCAM ALERT! This item is completely fake. Only 1% fruit pulp and 99% factory waste. Discard immediately!",
           offending_ingredients: ["Titanium Dioxide", "High Fructose Corn Syrup", "Maltodextrin", "Polysorbate 80"],
-          desi_swap: "Fresh Nimbu Pani ya homemade Mosambi Juice."
+          desi_swap: "Fresh Lemonade or homemade fruit juice."
         };
       } else {
         mockData = {
           deception_score: 75,
-          brutal_truth_hinglish: "Bhai, isme 'Real Juice' ke naam pe sirf chini aur artificial flavors bhare hain.",
+          brutal_truth_hinglish: "Warning: This 'Real Juice' contains only sugar and artificial flavors.",
           offending_ingredients: ["High Fructose Corn Syrup", "Artificial Colors (Red 40)"],
-          desi_swap: "Fresh Nimbu Pani."
+          desi_swap: "Fresh Lemonade."
         };
       }
 
@@ -195,13 +195,25 @@ const App = () => {
           {activeTab === 'leaderboard' && <LeaderboardView />}
         </div>
 
-        {/* Global Bottom Navigation */}
-        {(appState !== 'results' || activeTab !== 'scanner') && (
-          <Navbar activeTab={activeTab} setActiveTab={(tab) => {
+        {/* Global Bottom Navigation - desktop */}
+        <div className="hidden sm:block">
+          <Navbar
+            activeTab={activeTab}
+            setActiveTab={(tab) => {
+              if (appState === 'results') handleReset();
+              setActiveTab(tab);
+            }}
+          />
+        </div>
+
+        {/* Mobile Bottom Navigation */}
+        <BottomNav
+          activeTab={activeTab}
+          setActiveTab={(tab) => {
             if (appState === 'results') handleReset();
             setActiveTab(tab);
-          }} />
-        )}
+          }}
+        />
 
       </div>
     </>

@@ -39,10 +39,30 @@ const ResultsDashboard = ({ scanResult, onReset }) => {
     }
   }, [scanResult, isGlitch]);
 
-  const getMeterColor = (score) => {
-    if (score < 30) return 'bg-emerald-500';
-    if (score <= 70) return 'bg-amber-500';
-    return 'bg-red-500';
+  const [selectedIngredient, setSelectedIngredient] = React.useState(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+  const handleIngredientClick = (ing) => {
+    setSelectedIngredient(ing);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedIngredient(null);
+  };
+
+  const exportPdf = async () => {
+    if (!roastCardRef.current) return;
+    const canvas = await html2canvas(roastCardRef.current, { backgroundColor: '#0f172a' });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = await import('jspdf');
+    const pdf = new jsPDF();
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`${scanResult.product_name || 'scan'}_report.pdf`);
   };
 
   const playAudio = () => {

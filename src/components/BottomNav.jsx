@@ -1,14 +1,20 @@
+// src/components/BottomNav.jsx
 import React from 'react';
-import { Camera, Clock, Settings, User, Trophy } from 'lucide-react';
+import { Camera, Clock, Settings, User, Trophy, BookOpen } from 'lucide-react';
 import ThemeToggle from './UI/ThemeToggle';
 import LanguageSwitcher from './UI/LanguageSwitcher';
 
-const Navbar = ({ activeTab, setActiveTab }) => {
+/**
+ * Mobile‑first bottom navigation bar.
+ * Visible on screens <640px (Tailwind "sm").
+ * Mirrors the tabs used in the app state.
+ */
+const BottomNav = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-slate-900/60 backdrop-blur-xl border-t border-slate-700/50 z-50 px-2 py-2 pb-6 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.5)]">
+    <div className="fixed bottom-0 left-0 w-full bg-slate-900/60 backdrop-blur-xl border-t border-slate-700/50 z-50 px-2 py-2 pb-6 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.5)] block sm:hidden">
       <div className="max-w-md mx-auto w-full flex justify-between items-center px-2">
-        
-        <button 
+        {/* Profile */}
+        <button
           onClick={() => setActiveTab('profile')}
           aria-label="Profile"
           aria-current={activeTab === 'profile' ? 'page' : undefined}
@@ -17,8 +23,8 @@ const Navbar = ({ activeTab, setActiveTab }) => {
           <User size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">Profile</span>
         </button>
-
-        <button 
+        {/* History */}
+        <button
           onClick={() => setActiveTab('history')}
           aria-label="History"
           aria-current={activeTab === 'history' ? 'page' : undefined}
@@ -27,36 +33,39 @@ const Navbar = ({ activeTab, setActiveTab }) => {
           <Clock size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">History</span>
         </button>
-
-        <button 
+        {/* Scanner (central button) */}
+        <button
           onClick={() => setActiveTab('scanner')}
           aria-label="Open Scanner"
           aria-current={activeTab === 'scanner' ? 'page' : undefined}
           className="relative -mt-6 mx-2"
         >
-          <div className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform ${activeTab === 'scanner' ? 'bg-emerald-500 scale-110 shadow-emerald-500/30' : 'bg-slate-700 hover:bg-slate-600 shadow-slate-900/50'}`}>
+          <div
+            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform ${
+              activeTab === 'scanner' ? 'bg-emerald-500 scale-110 shadow-emerald-500/30' : 'bg-slate-700 hover:bg-slate-600 shadow-slate-900/50'
+            }`}
+          >
             <Camera size={26} className="text-white" aria-hidden="true" />
           </div>
         </button>
-
-        <button 
+        {/* Leaderboard */}
+        <button
           onClick={() => setActiveTab('leaderboard')}
-          aria-label="Global Leaderboard"
+          aria-label="Leaderboard"
           aria-current={activeTab === 'leaderboard' ? 'page' : undefined}
           className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'leaderboard' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
         >
           <Trophy size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">Global</span>
         </button>
-
-        {/* Library Tab */}
-        <button 
+        {/* Library */}
+        <button
           onClick={() => setActiveTab('library')}
           aria-label="Library"
           aria-current={activeTab === 'library' ? 'page' : undefined}
           className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'library' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
         >
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z"/></svg>
+          <BookOpen size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">Library</span>
         </button>
         {/* Theme & Language */}
@@ -64,8 +73,8 @@ const Navbar = ({ activeTab, setActiveTab }) => {
           <ThemeToggle />
           <LanguageSwitcher />
         </div>
-
-        <button 
+        {/* Settings */}
+        <button
           onClick={() => setActiveTab('settings')}
           aria-label="Settings"
           aria-current={activeTab === 'settings' ? 'page' : undefined}
@@ -74,10 +83,9 @@ const Navbar = ({ activeTab, setActiveTab }) => {
           <Settings size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">Config</span>
         </button>
-
       </div>
     </div>
   );
 };
 
-export default Navbar;
+export default BottomNav;
