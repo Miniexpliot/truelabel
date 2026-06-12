@@ -26,8 +26,14 @@ const App = () => {
     try {
       const saved = localStorage.getItem('true_label_history');
       let historyArray = saved ? JSON.parse(saved) : [];
+      
+      // Ensure offending_ingredients exists as strings for backward compatibility
+      const offending = result.offending_ingredients || 
+        (result.harmful_ingredients ? result.harmful_ingredients.map(i => i.name) : []);
+
       historyArray.push({
         ...result,
+        offending_ingredients: offending,
         timestamp: new Date().toISOString()
       });
       if (historyArray.length > 50) historyArray.shift();
@@ -64,10 +70,16 @@ const App = () => {
     
     // Diet Violation Check (Mock Logic)
     if (settings.veganMode) {
-      // Force a violation if not already bad
       data.deception_score = 100;
       data.brutal_truth_hinglish = "🚨 VEGAN VIOLATION: Gelatin and Milk Solids detected! This product claims '100% Veg' but contains animal ingredients.";
-      data.offending_ingredients = ["Gelatin (Animal Derived)", "Milk Solids", ...data.offending_ingredients];
+      
+      // Prepend the vegan violations as objects
+      data.harmful_ingredients = [
+        { name: "Gelatin (Animal Derived)", fact: "Derived from animal collagen, violating strict vegan guidelines." },
+        { name: "Milk Solids", fact: "Dairy component, violating dairy-free or strictly vegan requirements." },
+        ...(data.harmful_ingredients || [])
+      ];
+      data.offending_ingredients = data.harmful_ingredients.map(i => i.name);
     }
     
     return data;
@@ -113,30 +125,114 @@ const App = () => {
 
     // Mock response fallback
     setTimeout(() => {
-      // Create random mock scenarios (10% clean, 10% extreme glitch, 80% bad)
-      const rand = Math.random();
+      const filename = file.name || "";
+      const lowerFile = filename.toLowerCase();
       let mockData;
       
-      if (rand < 0.1) {
+      if (lowerFile.includes("coke") || lowerFile.includes("soda") || lowerFile.includes("juice") || lowerFile.includes("drink") || lowerFile.includes("beverage")) {
         mockData = {
-          deception_score: 15,
-          brutal_truth_hinglish: "Great choice! This product contains real mango and reduced sugar. Enjoy it freely.",
-          offending_ingredients: [],
-          desi_swap: "N/A"
+          product_name: "Fizzy Orange Soda",
+          deception_score: 85,
+          brutal_truth_hinglish: "Bhai, label pe likha hai 'Fresh Orange & Real Fruit' par asal mein yeh bas high fructose syrup aur carbonated paani hai. 100% scam chal raha hai!",
+          harmful_ingredients: [
+            {
+              name: "High Fructose Corn Syrup",
+              fact: "Spikes insulin and blood sugar instantly, contributing directly to fatty liver disease."
+            },
+            {
+              name: "Sunset Yellow (FCF)",
+              fact: "Derived from petroleum chemicals; linked to hyperactivity in children and banned in several countries."
+            },
+            {
+              name: "Sodium Preservatives",
+              fact: "Can react with vitamin C to produce benzene, a known carcinogen."
+            }
+          ],
+          good_ingredients: [
+            {
+              name: "Purified Carbonated Water",
+              benefit: "Provides basic hydration, but the high sugar content completely overrides any health benefits."
+            }
+          ],
+          desi_swap: "Fresh Orange Juice (no sugar added) or traditional Nimbu Shanjivi."
         };
-      } else if (rand > 0.9) {
+      } else if (lowerFile.includes("noodles") || lowerFile.includes("maggie") || lowerFile.includes("ramen") || lowerFile.includes("instant")) {
         mockData = {
-          deception_score: 95,
-          brutal_truth_hinglish: "SCAM ALERT! This item is completely fake. Only 1% fruit pulp and 99% factory waste. Discard immediately!",
-          offending_ingredients: ["Titanium Dioxide", "High Fructose Corn Syrup", "Maltodextrin", "Polysorbate 80"],
-          desi_swap: "Fresh Lemonade or homemade fruit juice."
+          product_name: "Instant Masala Noodles",
+          deception_score: 90,
+          brutal_truth_hinglish: "Sirf 2 minute mein tayaar hone wali bimari! Maida, palm oil aur heavy sodium ka combo jo aapke liver aur gut ko direct damage karta hai.",
+          harmful_ingredients: [
+            {
+              name: "Refined Wheat Flour (Maida)",
+              fact: "Stripped of fiber, digests slowly, and can cause digestive issues or sluggishness."
+            },
+            {
+              name: "Refined Palm Oil",
+              fact: "Highly processed saturated fat that increases bad cholesterol and arterial clogging risks."
+            },
+            {
+              name: "Monosodium Glutamate (MSG)",
+              fact: "Triggers intense flavor signals that encourage overeating, leading to a sodium crash."
+            }
+          ],
+          good_ingredients: [
+            {
+              name: "Spices Blend (Turmeric, Garlic)",
+              benefit: "Contains small natural anti-inflammatory antioxidants, though drowned in sodium."
+            }
+          ],
+          desi_swap: "Homemade Veg Vermicelli (Sewai) cooked with mustard seeds, curry leaves, and fresh peas."
+        };
+      } else if (lowerFile.includes("bar") || lowerFile.includes("cookie") || lowerFile.includes("protein") || lowerFile.includes("health")) {
+        mockData = {
+          product_name: "Healthy Oats Protein Bar",
+          deception_score: 55,
+          brutal_truth_hinglish: "Health ke naam pe mithaas! Labeled 'No Added Sugar' par peeche Maltodextrin aur liquid glucose/maltitol syrup chhupa rakha hai.",
+          harmful_ingredients: [
+            {
+              name: "Maltodextrin",
+              fact: "Has a higher glycemic index than white sugar, causing rapid blood sugar spikes."
+            },
+            {
+              name: "Artificial Sweeteners (Maltitol)",
+              fact: "Low-calorie sugar alcohol that can cause bloating and digestive discomfort."
+            }
+          ],
+          good_ingredients: [
+            {
+              name: "Rolled Oats",
+              benefit: "Rich in beta-glucan soluble fiber, supporting cardiovascular health and cholesterol management."
+            },
+            {
+              name: "Almonds & Seeds",
+              benefit: "Provides trace minerals like zinc, magnesium, and healthy monounsaturated fatty acids."
+            }
+          ],
+          desi_swap: "Roasted Makhana (Fox Nuts) with a pinch of black pepper, or simple roasted dry chana."
         };
       } else {
+        // General category fallback
         mockData = {
+          product_name: "Crispy Potato Namkeen Chips",
           deception_score: 75,
-          brutal_truth_hinglish: "Warning: This 'Real Juice' contains only sugar and artificial flavors.",
-          offending_ingredients: ["High Fructose Corn Syrup", "Artificial Colors (Red 40)"],
-          desi_swap: "Fresh Lemonade."
+          brutal_truth_hinglish: "Zero Cholesterol likh ke bech rahe hain, par refined palm oil mein deep fry kiya hua hai. Aise cholesterol kam nahi hota, dosto!",
+          harmful_ingredients: [
+            {
+              name: "Refined Vegetable Palm Oil",
+              fact: "Highly processed, saturated fat that raises LDL ('bad') cholesterol."
+            },
+            {
+              name: "Excessive Sodium Chloride",
+              fact: "High salt levels contribute to elevated blood pressure and strain the kidneys."
+            }
+          ],
+          good_ingredients: [
+            {
+              name: "Potato Starch / Besan",
+              benefit: "Provides clean energy source, though cooking method ruins its nutritional value."
+            }
+          ],
+          desi_swap: "Homemade roasted puffed rice (Kurmura) mix or dry-roasted masala peanuts."
         };
       }
 

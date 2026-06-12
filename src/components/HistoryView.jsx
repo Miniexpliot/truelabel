@@ -69,15 +69,15 @@ const HistoryView = ({ setActiveTab }) => {
             "{item.brutal_truth_hinglish}"
           </div>
 
-          {item.offending_ingredients && item.offending_ingredients.length > 0 && (
+          {((item.harmful_ingredients && item.harmful_ingredients.length > 0) || (item.offending_ingredients && item.offending_ingredients.length > 0)) && (
             <div className="flex flex-wrap gap-1 mt-1">
-              {item.offending_ingredients.slice(0, 3).map((ing, i) => (
+              {(item.harmful_ingredients || item.offending_ingredients.map(name => ({ name }))).slice(0, 3).map((ing, i) => (
                 <span key={i} className="text-[10px] uppercase tracking-wider text-red-300 bg-red-900/30 px-2 py-0.5 rounded-sm">
-                  {ing}
+                  {ing.name || ing}
                 </span>
               ))}
-              {item.offending_ingredients.length > 3 && (
-                <span className="text-[10px] text-slate-500">+{item.offending_ingredients.length - 3} more</span>
+              {((item.harmful_ingredients || item.offending_ingredients).length > 3) && (
+                <span className="text-[10px] text-slate-500">+{(item.harmful_ingredients || item.offending_ingredients).length - 3} more</span>
               )}
             </div>
           )}

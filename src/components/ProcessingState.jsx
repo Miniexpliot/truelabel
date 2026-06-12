@@ -5,35 +5,50 @@ const ProcessingState = () => {
   const [loadingText, setLoadingText] = useState('');
 
   const loadingPhrases = [
-    "Analyzing corporate fluff...",
-    "Decoding chemical lies...",
-    "Finding hidden sugars...",
-    "Consulting local daadi...",
-    "Exposing the truth..."
+    "Initializing digital magnifying glass...",
+    "Scanning food package label...",
+    "Extracting raw ingredient list...",
+    "Detecting category... Snacks/Beverage match found!",
+    "Comparing against local Daadi's database...",
+    "Exposing corporate ingredient lies...",
+    "Calculating deception score...",
+    "Drafting a brutal Hinglish roast..."
   ];
 
   useEffect(() => {
     let index = 0;
     setLoadingText(loadingPhrases[0]);
     const interval = setInterval(() => {
-      index = (index + 1) % loadingPhrases.length;
-      setLoadingText(loadingPhrases[index]);
-    }, 1500);
+      if (index < loadingPhrases.length - 1) {
+        index += 1;
+        setLoadingText(loadingPhrases[index]);
+      }
+    }, 1200);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center -mt-10 animation-fade-in">
-      <div className="relative w-40 h-40 flex items-center justify-center">
-        <div className="absolute inset-0 rounded-full border-4 border-slate-700"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-cyan-400 border-t-transparent animate-radar-spin shadow-[0_0_15px_rgba(34,211,238,0.5)]"></div>
-        <ScanLine size={48} className="text-cyan-400 animate-pulse" />
+    <div className="flex-1 flex flex-col items-center justify-center -mt-10 animation-fade-in relative z-10">
+      <div className="relative w-44 h-44 flex items-center justify-center">
+        {/* Glowing aura */}
+        <div className="absolute inset-0 rounded-full bg-cyan-500/10 blur-xl animate-pulse"></div>
+        {/* Track border */}
+        <div className="absolute inset-0 rounded-full border-2 border-slate-800"></div>
+        {/* Spinner */}
+        <div className="absolute inset-0 rounded-full border-2 border-cyan-400 border-t-transparent animate-radar-spin shadow-[0_0_20px_rgba(34,211,238,0.3)]"></div>
+        {/* Scanning grid visualization */}
+        <div className="absolute inset-4 rounded-full border border-dashed border-cyan-500/20 bg-slate-950/40 flex items-center justify-center overflow-hidden">
+          <div className="absolute left-0 right-0 h-0.5 bg-cyan-400/80 animate-scan-sweep opacity-75 shadow-[0_0_8px_cyan]"></div>
+          <ScanLine size={44} className="text-cyan-400/80 animate-pulse relative z-10" />
+        </div>
       </div>
-      <h2 className="mt-8 text-xl font-medium text-cyan-300 h-8 text-center transition-all duration-300">
+      <h2 className="mt-10 text-lg font-semibold tracking-wide text-cyan-400 h-8 text-center px-4 transition-all duration-300 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">
         {loadingText}
       </h2>
+      <p className="text-xs text-slate-500 text-center uppercase tracking-widest mt-2">Please do not close this screen</p>
     </div>
   );
 };
 
 export default ProcessingState;
+
