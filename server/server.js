@@ -19,6 +19,14 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
+// Health Check Route
+app.get('/', (req, res) => {
+  res.json({
+    status: "active",
+    message: "TrueLabel backend Express server is running successfully. Use POST /scan with a food label image to analyze ingredients."
+  });
+});
+
 // Scan Route
 app.post('/scan', upload.single('image'), async (req, res) => {
   try {
@@ -57,7 +65,17 @@ app.post('/scan', upload.single('image'), async (req, res) => {
   ],
   "desi_swap": "A healthy, natural, traditional Indian replacement/alternative (e.g. roasted chana, homemade buttermilk, nimbu paani)."
 }
-If there are no harmful ingredients, return an empty array for harmful_ingredients. If there are no good ingredients, return an empty array for good_ingredients.
+
+CRITICAL REQUIREMENT: If the uploaded image does not contain a food product, does not show a readable list of ingredients, or is too blurry/unreadable to extract ingredients, you MUST return this exact response:
+{
+  "product_name": "Invalid Ingredients Label",
+  "deception_score": 0,
+  "brutal_truth_hinglish": "Oops! Mujhe is image mein ingredients list nahi mili. Please ingredients label ki ek clear photo khinch ke upload karein!",
+  "harmful_ingredients": [],
+  "good_ingredients": [],
+  "desi_swap": "Please provide a readable ingredients list."
+}
+
 Expose marketing lies. For example, if a product claims 'high protein' but contains palm oil, high sugar, or maltodextrin, call that out in the Hinglish roast. Be extremely honest and funny, like a health inspector who is also a stand-up comedian.`;
 
     const payload = {
