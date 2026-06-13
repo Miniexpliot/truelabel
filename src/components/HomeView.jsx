@@ -20,13 +20,10 @@ const HomeView = ({ setActiveTab, onCapture }) => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col gap-10 pt-2 pb-32 animation-fade-in relative z-10 w-full max-w-3xl mx-auto px-4">
+    <div className="flex-1 flex flex-col gap-8 pt-0 pb-32 animation-fade-in relative z-10 w-full max-w-3xl mx-auto px-4">
       
       {/* Hero Section - A clean, flowing borderless presentation */}
-      <div className="flex flex-col items-center justify-center text-center mt-4 py-4">
-        <div className="w-16 h-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-5 shadow-sm animate-pulse-slow">
-          <ScanSearch size={28} className="text-emerald-600" />
-        </div>
+      <div className="flex flex-col items-center justify-center text-center mt-2 py-2">
         <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-3 tracking-tight leading-tight">
           Uncover the <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-500">Brutal Truth</span>
         </h1>

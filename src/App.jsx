@@ -6,6 +6,9 @@ import SettingsView from './components/SettingsView';
 import LibraryView from './components/LibraryView';
 import Sidebar from './components/Sidebar';
 import BottomNav from './components/BottomNav';
+import ProcessingState from './components/ProcessingState';
+import ResultsDashboard from './components/ResultsDashboard';
+
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('home'); // 'home', 'history', 'settings', 'library'
@@ -107,7 +110,7 @@ const App = () => {
         mockData = {
           product_name: "Fizzy Orange Soda",
           deception_score: 85,
-          brutal_truth_hinglish: "Bhai, label pe likha hai 'Fresh Orange & Real Fruit' par asal mein yeh bas high fructose syrup aur carbonated paani hai. 100% scam chal raha hai!",
+          brutal_truth_hinglish: "Although this drink claims 'Fresh Orange & Real Fruit', it is primarily carbonated water sweetened with high-fructose corn syrup, containing very little actual fruit juice. It also uses synthetic artificial food dyes and chemical preservatives.",
           harmful_ingredients: [
             {
               name: "High Fructose Corn Syrup",
@@ -134,7 +137,7 @@ const App = () => {
         mockData = {
           product_name: "Instant Masala Noodles",
           deception_score: 90,
-          brutal_truth_hinglish: "Sirf 2 minute mein tayaar hone wali bimari! Maida, palm oil aur heavy sodium ka combo jo aapke liver aur gut ko direct damage karta hai.",
+          brutal_truth_hinglish: "These noodles are highly processed and made from refined wheat flour (maida) and low-grade palm oil. They contain a high concentration of sodium and food flavor enhancers (MSG), which can cause digestion issues if eaten regularly.",
           harmful_ingredients: [
             {
               name: "Refined Wheat Flour (Maida)",
@@ -161,7 +164,7 @@ const App = () => {
         mockData = {
           product_name: "Healthy Oats Protein Bar",
           deception_score: 55,
-          brutal_truth_hinglish: "Health ke naam pe mithaas! Labeled 'No Added Sugar' par peeche Maltodextrin aur liquid glucose/maltitol syrup chhupa rakha hai.",
+          brutal_truth_hinglish: "While labeled 'No Added Sugar' and marketed as a fitness snack, it contains hidden sugars like maltodextrin and artificial sugar alcohols (maltitol) that can cause blood sugar spikes and gastrointestinal discomfort.",
           harmful_ingredients: [
             {
               name: "Maltodextrin",
@@ -189,7 +192,7 @@ const App = () => {
         mockData = {
           product_name: "Crispy Potato Namkeen Chips",
           deception_score: 75,
-          brutal_truth_hinglish: "Zero Cholesterol likh ke bech rahe hain, par refined palm oil mein deep fry kiya hua hai. Aise cholesterol kam nahi hota, dosto!",
+          brutal_truth_hinglish: "This product claims 'Zero Cholesterol' but is deep-fried in highly refined palm oil and saturated fats. It also contains excessive sodium content that can strain blood pressure levels.",
           harmful_ingredients: [
             {
               name: "Refined Vegetable Palm Oil",
@@ -282,10 +285,10 @@ const App = () => {
       <div className="w-full h-screen flex mesh-gradient-bg text-slate-800 overflow-hidden relative z-10 transition-all duration-300">
         
         {/* Desktop Sidebar */}
-        <div className={`hidden sm:block h-[calc(100vh-2rem)] shrink-0 my-4 ml-4 z-50 transition-all duration-500 ease-out ${
+        <div className={`hidden sm:block h-screen shrink-0 z-50 transition-all duration-500 ease-out ${
           showNavbar 
-            ? 'opacity-100 translate-x-0' 
-            : 'opacity-0 -translate-x-16 pointer-events-none w-0 !ml-0'
+            ? 'opacity-100 translate-x-0 w-20 md:w-64' 
+            : 'opacity-0 -translate-x-16 pointer-events-none w-0'
         }`}>
           <Sidebar
             activeTab={activeTab}

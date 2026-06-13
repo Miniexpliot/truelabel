@@ -13,10 +13,10 @@ const BottomNav = ({ activeTab, setActiveTab, onCapture, show }) => {
   const fileInputRef = React.useRef(null);
 
   return (
-    <div className={`fixed left-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200/40 rounded-3xl z-50 px-2 py-2 shadow-2xl block sm:hidden transition-all duration-500 ease-out ${
+    <div className={`fixed left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200/50 z-50 px-2 py-2 pb-6 block sm:hidden transition-all duration-500 ease-out ${
       show 
-        ? 'bottom-4 opacity-100 translate-y-0' 
-        : '-bottom-24 opacity-0 translate-y-10 pointer-events-none'
+        ? 'bottom-0 opacity-100 translate-y-0' 
+        : '-bottom-28 opacity-0 translate-y-12 pointer-events-none'
     }`}>
       <div className="w-full flex justify-between items-center px-2">
         {/* Home */}

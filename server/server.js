@@ -50,7 +50,7 @@ app.post('/scan', upload.single('image'), async (req, res) => {
 {
   "product_name": "Name of the product (or detected product name)",
   "deception_score": 75, // Integer score from 0 (perfectly healthy/clean) to 100 (extreme deception/unhealthy/chemical scam)
-  "brutal_truth_hinglish": "A brutal, blunt roast of this product in Hinglish (Hindi written in Latin script, e.g., 'Bhai, yeh juice nahi, sirf chini ka paani hai...'), exposing the marketing tricks and lies.",
+  "brutal_truth_hinglish": "A clear, honest, and easy-to-understand evaluation of the product in simple, plain English. Do NOT be overly harsh, rude, or sarcastic. Just objectively point out the bad things, chemicals, or unhealthy ingredients, and clarify any marketing claims vs reality.",
   "harmful_ingredients": [
     {
       "name": "Name of ingredient (e.g. Palm Oil)",
@@ -70,13 +70,13 @@ CRITICAL REQUIREMENT: If the uploaded image does not contain a food product, doe
 {
   "product_name": "Invalid Ingredients Label",
   "deception_score": 0,
-  "brutal_truth_hinglish": "Oops! Mujhe is image mein ingredients list nahi mili. Please ingredients label ki ek clear photo khinch ke upload karein!",
+  "brutal_truth_hinglish": "Oops! We could not read the ingredients list in this image. Please upload a clear, readable photo of the food ingredients label.",
   "harmful_ingredients": [],
   "good_ingredients": [],
   "desi_swap": "Please provide a readable ingredients list."
 }
 
-Expose marketing lies. For example, if a product claims 'high protein' but contains palm oil, high sugar, or maltodextrin, call that out in the Hinglish roast. Be extremely honest and funny, like a health inspector who is also a stand-up comedian.`;
+Point out any marketing lies. For example, if a product claims 'high protein' but contains palm oil, high sugar, or maltodextrin, call that out clearly and objectively. Keep the tone helpful, constructive, and simple to read in plain English.`;
 
     const payload = {
       contents: [
@@ -173,7 +173,7 @@ function getFallbackData(filename = "") {
     return {
       product_name: "Mock Fizzy Orange Drink",
       deception_score: 85,
-      brutal_truth_hinglish: "Bhai, label pe likha hai 'Fresh Orange & Real Fruit' par asal mein yeh bas high fructose syrup aur carbonated paani hai. 100% scam chal raha hai!",
+      brutal_truth_hinglish: "Although this drink claims 'Fresh Orange & Real Fruit', it is primarily carbonated water sweetened with high-fructose corn syrup, containing very little actual fruit juice. It also uses synthetic artificial food dyes and chemical preservatives.",
       harmful_ingredients: [
         {
           name: "High Fructose Corn Syrup",
@@ -202,7 +202,7 @@ function getFallbackData(filename = "") {
     return {
       product_name: "Mock Instant Masala Noodles",
       deception_score: 90,
-      brutal_truth_hinglish: "Sirf 2 minute mein tayaar hone wali bimari! Maida, palm oil aur heavy sodium ka combo jo aapke liver aur gut ko direct damage karta hai.",
+      brutal_truth_hinglish: "These noodles are highly processed and made from refined wheat flour (maida) and low-grade palm oil. They contain a high concentration of sodium and food flavor enhancers (MSG), which can cause digestion issues if eaten regularly.",
       harmful_ingredients: [
         {
           name: "Refined Wheat Flour (Maida)",
@@ -231,7 +231,7 @@ function getFallbackData(filename = "") {
     return {
       product_name: "Mock Healthy Oats & Nut Cookie",
       deception_score: 55,
-      brutal_truth_hinglish: "Health ke naam pe mithaas! Labeled 'No Added Sugar' par peeche Maltodextrin aur liquid glucose chhupa rakha hai. Thoda sambhal ke!",
+      brutal_truth_hinglish: "While labeled 'No Added Sugar' and marketed as a fitness snack, it contains hidden sugars like maltodextrin and artificial sugar alcohols (maltitol) that can cause blood sugar spikes and gastrointestinal discomfort.",
       harmful_ingredients: [
         {
           name: "Maltodextrin",
@@ -260,7 +260,7 @@ function getFallbackData(filename = "") {
   return {
     product_name: "Mock Crispy Salty Namkeen",
     deception_score: 75,
-    brutal_truth_hinglish: "Zero Cholesterol likh ke bech rahe hain, par refined palm oil mein deep fry kiya hua hai. Aise cholesterol kam nahi hota, dosto!",
+    brutal_truth_hinglish: "This product claims 'Zero Cholesterol' but is deep-fried in highly refined palm oil and saturated fats. It also contains excessive sodium content that can strain blood pressure levels.",
     harmful_ingredients: [
       {
         name: "Refined Palm Oil",
@@ -277,7 +277,7 @@ function getFallbackData(filename = "") {
         benefit: "A gluten-free flour source offering protein and iron compared to refined flour."
       }
     ],
-    desi_swap: "Roasted chickpeas (chana), puff rice mix (bhel), or dry roasted peanuts."
+    desi_swap: "Roasted chickpeas (chana), bhel mix, or dry roasted peanuts."
   };
 }
 

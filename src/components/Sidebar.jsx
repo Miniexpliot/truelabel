@@ -22,7 +22,7 @@ const Sidebar = ({ activeTab, setActiveTab, onCapture }) => {
   };
 
   return (
-    <div className="h-full w-20 md:w-64 flex flex-col items-center md:items-start py-8 px-2 md:px-4 gap-8 glass-panel z-50">
+    <div className="h-full w-full flex flex-col items-center md:items-start py-8 px-2 md:px-4 gap-8 bg-white/85 border-r border-slate-200/50 backdrop-blur-2xl z-50">
       
       {/* Brand Logo */}
       <div className="flex items-center gap-3 px-2 w-full justify-center md:justify-start">
