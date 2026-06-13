@@ -9,11 +9,15 @@ import LanguageSwitcher from './UI/LanguageSwitcher';
  * Visible on screens <640px (Tailwind "sm").
  * Mirrors the tabs used in the app state.
  */
-const BottomNav = ({ activeTab, setActiveTab, onCapture }) => {
+const BottomNav = ({ activeTab, setActiveTab, onCapture, show }) => {
   const fileInputRef = React.useRef(null);
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-slate-200/50 rounded-3xl z-50 px-2 py-2 shadow-2xl block sm:hidden">
+    <div className={`fixed left-4 right-4 bg-white/95 backdrop-blur-md border border-slate-200/40 rounded-3xl z-50 px-2 py-2 shadow-2xl block sm:hidden transition-all duration-500 ease-out ${
+      show 
+        ? 'bottom-4 opacity-100 translate-y-0' 
+        : '-bottom-24 opacity-0 translate-y-10 pointer-events-none'
+    }`}>
       <div className="w-full flex justify-between items-center px-2">
         {/* Home */}
         <button

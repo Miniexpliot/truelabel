@@ -14,11 +14,22 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [lastUploadedFile, setLastUploadedFile] = useState(null);
   const [streak, setStreak] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const savedStreak = localStorage.getItem('true_label_streak');
     if (savedStreak) setStreak(parseInt(savedStreak));
   }, []);
+
+  const handleScroll = (e) => {
+    if (e.target.scrollTop > 50) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  const showNavbar = activeTab !== 'home' || appState !== 'idle' || scrolled;
 
   const saveToHistoryAndStreak = (result) => {
     try {
@@ -271,7 +282,11 @@ const App = () => {
       <div className="w-full h-screen flex mesh-gradient-bg text-slate-800 overflow-hidden relative z-10 transition-all duration-300">
         
         {/* Desktop Sidebar */}
-        <div className="hidden sm:block h-[calc(100vh-2rem)] shrink-0 my-4 ml-4 z-50">
+        <div className={`hidden sm:block h-[calc(100vh-2rem)] shrink-0 my-4 ml-4 z-50 transition-all duration-500 ease-out ${
+          showNavbar 
+            ? 'opacity-100 translate-x-0' 
+            : 'opacity-0 -translate-x-16 pointer-events-none w-0 !ml-0'
+        }`}>
           <Sidebar
             activeTab={activeTab}
             setActiveTab={(tab) => {
@@ -283,7 +298,10 @@ const App = () => {
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col relative z-0 h-full overflow-y-auto overflow-x-hidden p-4 md:p-8 items-center">
+        <div 
+          onScroll={handleScroll}
+          className="flex-1 flex flex-col relative z-0 h-full overflow-y-auto overflow-x-hidden p-4 md:p-8 items-center"
+        >
           <div className="w-full max-w-5xl mx-auto flex flex-col flex-1 pb-20 sm:pb-8">
             {appState === 'processing' && <ProcessingState />}
             {appState === 'results' && scanResult && (
@@ -320,7 +338,7 @@ const App = () => {
 
             {appState === 'idle' && (
               <>
-                {activeTab === 'home' && <HomeView setActiveTab={setActiveTab} />}
+                {activeTab === 'home' && <HomeView setActiveTab={setActiveTab} onCapture={handleImageCapture} />}
                 {activeTab === 'history' && <HistoryView setActiveTab={setActiveTab} />}
                 {activeTab === 'settings' && <SettingsView />}
                 {activeTab === 'library' && <LibraryView />}
@@ -331,6 +349,7 @@ const App = () => {
 
         {/* Mobile Bottom Navigation */}
         <BottomNav
+          show={showNavbar}
           activeTab={activeTab}
           setActiveTab={(tab) => {
             if (appState === 'results') handleReset();
