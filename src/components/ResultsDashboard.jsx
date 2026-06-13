@@ -287,7 +287,7 @@ const ResultsDashboard = ({ scanResult, onReset }) => {
       </div>
 
       {/* Sticky Scan Another Item floating action */}
-      <div className="fixed bottom-24 left-0 w-full px-4 z-40 pointer-events-none">
+      <div className="fixed bottom-32 left-0 w-full px-4 z-40 pointer-events-none">
         <div className="max-w-xs mx-auto pointer-events-auto">
           <button 
             onClick={() => {
