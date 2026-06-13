@@ -312,22 +312,22 @@ const App = () => {
                 <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 mb-2 shadow-[0_0_15px_rgba(239,68,68,0.15)]">
                   <ShieldAlert size={32} />
                 </div>
-                <h3 className="text-lg font-bold text-white uppercase tracking-wider">Scan Failed</h3>
-                <p className="text-sm text-slate-300 max-w-[280px] leading-relaxed">
+                <h3 className="text-xl font-bold text-slate-850 uppercase tracking-wider">Scan Failed</h3>
+                <p className="text-sm text-slate-600 max-w-[280px] leading-relaxed font-medium">
                   {errorMessage}
                 </p>
                 
-                <div className="flex flex-col gap-2 w-full max-w-[240px] mt-4">
+                <div className="flex flex-col gap-2.5 w-full max-w-[240px] mt-4">
                   <button
                     onClick={handleReset}
-                    className="w-full px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-semibold transition-all shadow-md active:scale-[0.98]"
+                    className="w-full px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-md active:scale-[0.98]"
                   >
                     Try Again
                   </button>
                   {lastUploadedFile && (
                     <button
                       onClick={() => handleMockFallback(lastUploadedFile)}
-                      className="w-full px-6 py-2.5 bg-transparent hover:bg-slate-800/40 text-cyan-400 hover:text-cyan-300 text-xs font-semibold transition-all"
+                      className="w-full px-6 py-2.5 bg-transparent hover:bg-slate-100 text-emerald-600 hover:text-emerald-700 text-xs font-bold transition-all rounded-xl border border-emerald-500/10"
                     >
                       Use Offline Demo Mode
                     </button>

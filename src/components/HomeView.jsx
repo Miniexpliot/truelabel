@@ -89,18 +89,6 @@ const HomeView = ({ setActiveTab, onCapture }) => {
         </div>
       </div>
 
-      {/* Quick Access Actions - borderless text buttons with hover accents */}
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-4 pt-6 border-t border-slate-900/5">
-        <button 
-          onClick={() => setActiveTab('history')}
-          className="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-emerald-600 transition-colors group"
-        >
-          <Clock size={16} />
-          <span>Browse Scan History</span>
-          <ChevronRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-        </button>
-      </div>
-
     </div>
   );
 };
