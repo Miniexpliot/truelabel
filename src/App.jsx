@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Flame } from 'lucide-react';
+import { Flame, ShieldAlert } from 'lucide-react';
 import ScannerInterface from './components/ScannerInterface';
 import ProcessingState from './components/ProcessingState';
 import ResultsDashboard from './components/NewResultsDashboard';
@@ -13,8 +13,10 @@ import BottomNav from './components/BottomNav';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('scanner'); // 'scanner', 'history', 'settings', 'profile', 'leaderboard'
-  const [appState, setAppState] = useState('idle'); // idle, processing, results
+  const [appState, setAppState] = useState('idle'); // idle, processing, results, error
   const [scanResult, setScanResult] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [lastUploadedFile, setLastUploadedFile] = useState(null);
   const [streak, setStreak] = useState(0);
 
   useEffect(() => {
@@ -85,47 +87,12 @@ const App = () => {
     return data;
   };
 
-  const handleImageCapture = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    // Security & Hardening: Validate file type and size before processing
-    if (!file.type.startsWith('image/')) {
-      alert("Security Alert: Invalid file type. Please upload an image.");
-      return;
-    }
-    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-    if (file.size > MAX_SIZE) {
-      alert("Security Alert: File is too large (max 10MB).");
-      return;
-    }
-
+  const handleMockFallback = (fileObj) => {
+    const fileToUse = fileObj || lastUploadedFile;
     setAppState('processing');
-
-    const formData = new FormData();
-    formData.append('image', file);
-
-    try {
-      const response = await fetch('http://localhost:8000/scan', {
-        method: 'POST',
-        body: formData
-      });
-
-      if (response.ok) {
-        let data = await response.json();
-        data = applyAllergyEngine(data);
-        setScanResult(data);
-        saveToHistoryAndStreak(data);
-        setAppState('results');
-        return;
-      }
-    } catch (error) {
-      console.warn("Backend fetch failed. Using mock data.");
-    }
-
-    // Mock response fallback
+    setErrorMessage('');
     setTimeout(() => {
-      const filename = file.name || "";
+      const filename = fileToUse ? fileToUse.name : "";
       const lowerFile = filename.toLowerCase();
       let mockData;
       
@@ -235,17 +202,72 @@ const App = () => {
           desi_swap: "Homemade roasted puffed rice (Kurmura) mix or dry-roasted masala peanuts."
         };
       }
-
       mockData = applyAllergyEngine(mockData);
       setScanResult(mockData);
       saveToHistoryAndStreak(mockData);
       setAppState('results');
-    }, 3000);
+    }, 1500);
+  };
+
+  const handleImageCapture = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Security & Hardening: Validate file type and size before processing
+    if (!file.type.startsWith('image/')) {
+      alert("Security Alert: Invalid file type. Please upload an image.");
+      return;
+    }
+    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+    if (file.size > MAX_SIZE) {
+      alert("Security Alert: File is too large (max 10MB).");
+      return;
+    }
+
+    setLastUploadedFile(file);
+    setAppState('processing');
+    setErrorMessage('');
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/scan`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        let data = await response.json();
+        
+        // Handle Gemini reporting an invalid ingredients label
+        if (data.product_name === "Invalid Ingredients Label") {
+          setErrorMessage(data.brutal_truth_hinglish || "Oops! Could not read the ingredients list. Please upload a clear photo of the food label.");
+          setAppState('error');
+          return;
+        }
+
+        data = applyAllergyEngine(data);
+        setScanResult(data);
+        saveToHistoryAndStreak(data);
+        setAppState('results');
+        return;
+      } else {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `Server responded with status ${response.status}`);
+      }
+    } catch (error) {
+      console.warn("Backend scan failed:", error);
+      setErrorMessage(error.message || "Failed to communicate with the server. Please check your connection.");
+      setAppState('error');
+    }
   };
 
   const handleReset = () => {
     setAppState('idle');
     setScanResult(null);
+    setErrorMessage('');
   };
 
   return (
@@ -267,6 +289,34 @@ const App = () => {
               {appState === 'processing' && <ProcessingState />}
               {appState === 'results' && scanResult && (
                 <ResultsDashboard scanResult={scanResult} onReset={handleReset} />
+              )}
+              {appState === 'error' && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 animation-fade-in gap-4 pb-20">
+                  <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 mb-2 shadow-[0_0_15px_rgba(239,68,68,0.15)]">
+                    <ShieldAlert size={32} />
+                  </div>
+                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">Scan Failed</h3>
+                  <p className="text-sm text-slate-300 max-w-[280px] leading-relaxed">
+                    {errorMessage}
+                  </p>
+                  
+                  <div className="flex flex-col gap-2 w-full max-w-[240px] mt-4">
+                    <button
+                      onClick={handleReset}
+                      className="w-full px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white rounded-xl text-sm font-semibold transition-all active:scale-[0.98]"
+                    >
+                      Try Again
+                    </button>
+                    {lastUploadedFile && (
+                      <button
+                        onClick={() => handleMockFallback(lastUploadedFile)}
+                        className="w-full px-6 py-2.5 bg-transparent hover:bg-slate-800/40 text-cyan-400 hover:text-cyan-300 text-xs font-semibold transition-all"
+                      >
+                        Use Offline Demo Mode
+                      </button>
+                    )}
+                  </div>
+                </div>
               )}
             </>
           )}

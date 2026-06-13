@@ -156,8 +156,9 @@ Expose marketing lies. For example, if a product claims 'high protein' but conta
 
   } catch (error) {
     console.error("Scan processing error:", error);
-    // Return graceful mock fallback on failure so front-end does not break
-    return res.status(200).json(getFallbackData("fallback_error_recovery"));
+    return res.status(500).json({ 
+      error: "Failed to analyze ingredients. Please make sure the image is clear, readable, and you have configured a valid GEMINI_API_KEY." 
+    });
   }
 });
 
