@@ -42,10 +42,10 @@ const ProcessingState = () => {
           <ScanLine size={44} className="text-emerald-500 animate-pulse relative z-10" />
         </div>
       </div>
-      <h2 className="mt-10 text-lg font-semibold tracking-wide text-slate-800 h-8 text-center px-4 transition-all duration-300">
+      <h2 className="mt-10 text-lg font-semibold tracking-wide text-slate-800 min-h-[3rem] text-center px-4 transition-all duration-300">
         {loadingText}
       </h2>
-      <p className="text-xs text-slate-500 text-center uppercase tracking-widest mt-2">Please do not close this screen</p>
+      <p className="text-[10px] text-slate-400 text-center uppercase tracking-widest mt-1">Please do not close this screen</p>
     </div>
   );
 };
