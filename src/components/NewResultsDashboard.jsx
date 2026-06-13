@@ -93,11 +93,11 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
         />
         
         {/* Visual Header for the Snapshot */}
-        <div className="flex justify-between items-center px-2">
-          <h4 className="text-xs uppercase tracking-widest font-bold text-slate-400">Shareable Snapshot</h4>
+        <div className="flex justify-between items-center px-2 mt-4 glass-panel py-3 px-4 mb-2">
+          <h4 className="text-xs uppercase tracking-widest font-bold text-slate-500">Shareable Snapshot</h4>
           <button 
             onClick={downloadSnapshot}
-            className="flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-semibold transition-colors"
+            className="flex items-center gap-1.5 text-xs text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
           >
             <Share2 size={13} /> Download Image
           </button>
@@ -106,53 +106,53 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
         {/* --- SIDE-BY-SIDE SNAPSHOT INFOGRAPHIC --- */}
         <div 
           ref={snapshotRef} 
-          className="glass-panel p-6 rounded-3xl border border-slate-800/80 bg-gradient-to-b from-[#0f172a]/90 to-[#0b1120]/95 shadow-[0_15px_35px_-5px_rgba(0,0,0,0.6)] relative overflow-hidden"
+          className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-xl relative overflow-hidden"
         >
           {/* Header */}
-          <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-800/60">
+          <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
             <div>
               <h3 className="text-sm font-black tracking-widest text-slate-400 uppercase">TRUELABEL AUDIT</h3>
               <p className="text-[10px] text-slate-500 font-mono mt-0.5">ID: TL-{Math.floor(100000 + Math.random() * 900000)}</p>
             </div>
-            <div className="flex items-center gap-1.5 bg-slate-950/60 border border-slate-800 px-3 py-1.5 rounded-full">
-              <Sparkles size={12} className="text-cyan-400 animate-pulse" />
-              <span className="text-[10px] font-bold text-white uppercase tracking-widest">AI Certified</span>
+            <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full">
+              <Sparkles size={12} className="text-emerald-500" />
+              <span className="text-[10px] font-bold text-slate-700 uppercase tracking-widest">AI Certified</span>
             </div>
           </div>
 
           {/* Product and Score Header */}
-          <div className="text-center mb-6 bg-slate-950/30 p-4 rounded-2xl border border-slate-900">
-            <h2 className="text-lg font-bold text-white tracking-wide truncate">{scanResult.product_name || "Unknown Product"}</h2>
+          <div className="text-center mb-6 bg-slate-50 border border-slate-100 p-4 rounded-3xl">
+            <h2 className="text-lg font-bold text-slate-900 tracking-wide truncate">{scanResult.product_name || "Unknown Product"}</h2>
             <div className="flex items-center justify-center gap-2 mt-2">
-              <span className="text-xs text-slate-400 uppercase tracking-widest font-semibold">Deception Index:</span>
-              <span className={`text-xl font-extrabold ${scanResult.deception_score > 50 ? 'text-red-400' : 'text-emerald-400'}`}>
+              <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold">Deception Index:</span>
+              <span className={`text-xl font-extrabold ${scanResult.deception_score > 50 ? 'text-rose-600' : 'text-emerald-600'}`}>
                 {scanResult.deception_score}%
               </span>
             </div>
-            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-3 max-w-[200px] mx-auto">
+            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mt-3 max-w-[200px] mx-auto">
               <div 
-                className={`h-full ${scanResult.deception_score > 50 ? 'bg-gradient-to-r from-red-500 to-rose-400' : 'bg-gradient-to-r from-emerald-500 to-teal-400'}`} 
+                className={`h-full ${scanResult.deception_score > 50 ? 'bg-gradient-to-r from-rose-500 to-red-400' : 'bg-gradient-to-r from-emerald-500 to-teal-400'}`} 
                 style={{ width: `${scanResult.deception_score}%` }}
               ></div>
             </div>
           </div>
 
           {/* Side-by-Side Content */}
-          <div className="grid grid-cols-2 gap-4 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
             
             {/* The Bad Panel (Left) */}
-            <div className="bg-red-950/10 border border-red-500/20 p-4 rounded-2xl flex flex-col">
-              <h4 className="text-xs font-black uppercase tracking-widest text-red-400 mb-3 flex items-center gap-1 border-b border-red-500/10 pb-1.5">
-                <ShieldAlert size={12} className="text-red-400" /> THE BAD
+            <div className="bg-rose-50 border border-rose-100 p-5 rounded-3xl flex flex-col">
+              <h4 className="text-xs font-black uppercase tracking-widest text-rose-600 mb-3 flex items-center gap-1 border-b border-rose-200 pb-2">
+                <ShieldAlert size={14} className="text-rose-600" /> THE BAD
               </h4>
               {harmfulList.length > 0 ? (
-                <ul className="flex-1 flex flex-col gap-2.5">
+                <ul className="flex-1 flex flex-col gap-3">
                   {harmfulList.map((ing, i) => (
-                    <li key={i} className="text-[11px] text-slate-300 leading-tight flex items-start gap-1">
-                      <span className="text-red-400 mt-0.5 font-bold">•</span>
+                    <li key={i} className="text-[11px] text-slate-700 leading-tight flex items-start gap-1">
+                      <span className="text-rose-600 mt-0.5 font-bold">•</span>
                       <div>
-                        <strong className="text-white block font-medium">{ing.name}</strong>
-                        <span className="text-slate-400 text-[10px] block mt-0.5">{ing.fact}</span>
+                        <strong className="text-slate-900 block font-bold">{ing.name}</strong>
+                        <span className="text-slate-600 text-[10px] block mt-0.5">{ing.fact}</span>
                       </div>
                     </li>
                   ))}
@@ -165,19 +165,19 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
             </div>
 
             {/* The Good Panel (Right) */}
-            <div className="bg-emerald-950/10 border border-emerald-500/20 p-4 rounded-2xl flex flex-col justify-between">
+            <div className="bg-emerald-50 border border-emerald-100 p-5 rounded-3xl flex flex-col justify-between">
               <div>
-                <h4 className="text-xs font-black uppercase tracking-widest text-emerald-400 mb-3 flex items-center gap-1 border-b border-emerald-500/10 pb-1.5">
-                  <ShieldCheck size={12} className="text-emerald-400" /> THE GOOD
+                <h4 className="text-xs font-black uppercase tracking-widest text-emerald-600 mb-3 flex items-center gap-1 border-b border-emerald-200 pb-2">
+                  <ShieldCheck size={14} className="text-emerald-600" /> THE GOOD
                 </h4>
                 {goodList.length > 0 ? (
-                  <ul className="flex flex-col gap-2.5 mb-4">
+                  <ul className="flex flex-col gap-3 mb-4">
                     {goodList.map((ing, i) => (
-                      <li key={i} className="text-[11px] text-slate-300 leading-tight flex items-start gap-1">
-                        <span className="text-emerald-400 mt-0.5 font-bold">•</span>
+                      <li key={i} className="text-[11px] text-slate-700 leading-tight flex items-start gap-1">
+                        <span className="text-emerald-600 mt-0.5 font-bold">•</span>
                         <div>
-                          <strong className="text-white block font-medium">{ing.name}</strong>
-                          <span className="text-slate-400 text-[10px] block mt-0.5">{ing.benefit}</span>
+                          <strong className="text-slate-900 block font-bold">{ing.name}</strong>
+                          <span className="text-slate-600 text-[10px] block mt-0.5">{ing.benefit}</span>
                         </div>
                       </li>
                     ))}
@@ -191,9 +191,9 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
 
               {/* Desi Swap inside the good column */}
               {scanResult.desi_swap && scanResult.desi_swap !== 'N/A' && (
-                <div className="mt-auto bg-emerald-500/10 border border-emerald-500/20 p-2.5 rounded-xl text-center">
-                  <span className="text-[9px] uppercase tracking-wider text-emerald-400 font-bold block mb-0.5">Recommended Swap</span>
-                  <p className="text-[10px] text-emerald-100 font-medium leading-tight">{scanResult.desi_swap}</p>
+                <div className="mt-auto bg-emerald-100 border border-emerald-200 p-3 rounded-2xl text-center">
+                  <span className="text-[9px] uppercase tracking-wider text-emerald-700 font-bold block mb-0.5">Recommended Swap</span>
+                  <p className="text-[10px] text-emerald-900 font-medium leading-tight">{scanResult.desi_swap}</p>
                 </div>
               )}
             </div>
@@ -201,7 +201,7 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
           </div>
 
           {/* Footer Branding */}
-          <div className="text-center mt-6 pt-3 border-t border-slate-800/60 flex justify-between items-center text-[9px] text-slate-500 font-mono">
+          <div className="text-center mt-8 pt-4 border-t border-slate-100 flex justify-between items-center text-[9px] text-slate-400 font-mono">
             <span>UNCOVER THE BRUTAL TRUTH</span>
             <span>WWW.TRUELABEL.AI</span>
           </div>
@@ -209,14 +209,14 @@ export default function NewResultsDashboard({ scanResult, onReset }) {
       </div>
 
       {/* Scan Another Item Sticky Button */}
-      <div className="fixed bottom-20 left-0 w-full px-4 z-40 pointer-events-none">
-        <div className="max-w-md mx-auto pointer-events-auto">
+      <div className="sticky bottom-4 w-full z-40 pointer-events-none mt-8">
+        <div className="max-w-xl mx-auto pointer-events-auto px-4">
           <button
             onClick={() => {
               window.speechSynthesis.cancel();
               onReset();
             }}
-            className="w-full bg-slate-800/90 hover:bg-slate-700/90 border border-slate-600/50 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.6)] backdrop-blur-md transition-all active:scale-[0.98]"
+            className="w-full glass-panel text-slate-900 hover:bg-slate-50 font-bold py-4 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
           >
             <RefreshCw size={18} /> Scan Another Item
           </button>

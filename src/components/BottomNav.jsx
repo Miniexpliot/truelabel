@@ -1,6 +1,6 @@
 // src/components/BottomNav.jsx
 import React from 'react';
-import { Camera, Clock, Settings, User, Trophy, BookOpen } from 'lucide-react';
+import { Camera, Clock, Settings, BookOpen, Home } from 'lucide-react';
 import ThemeToggle from './UI/ThemeToggle';
 import LanguageSwitcher from './UI/LanguageSwitcher';
 
@@ -13,24 +13,24 @@ const BottomNav = ({ activeTab, setActiveTab, onCapture }) => {
   const fileInputRef = React.useRef(null);
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-slate-900/60 backdrop-blur-xl border-t border-slate-700/50 z-50 px-2 py-2 pb-6 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.5)] block sm:hidden">
-      <div className="max-w-md mx-auto w-full flex justify-between items-center px-2">
-        {/* Profile */}
+    <div className="fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-slate-200/50 rounded-3xl z-50 px-2 py-2 shadow-2xl block sm:hidden">
+      <div className="w-full flex justify-between items-center px-2">
+        {/* Home */}
         <button
-          onClick={() => setActiveTab('profile')}
-          aria-label="Profile"
-          aria-current={activeTab === 'profile' ? 'page' : undefined}
-          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'profile' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+          onClick={() => setActiveTab('home')}
+          aria-label="Home"
+          aria-current={activeTab === 'home' ? 'page' : undefined}
+          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'home' ? 'text-emerald-600' : 'text-slate-500 hover:text-slate-800'}`}
         >
-          <User size={22} aria-hidden="true" />
-          <span className="text-[9px] font-medium uppercase tracking-wider">Profile</span>
+          <Home size={22} aria-hidden="true" />
+          <span className="text-[9px] font-medium uppercase tracking-wider">Home</span>
         </button>
         {/* History */}
         <button
           onClick={() => setActiveTab('history')}
           aria-label="History"
           aria-current={activeTab === 'history' ? 'page' : undefined}
-          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'history' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'history' ? 'text-emerald-600' : 'text-slate-500 hover:text-slate-800'}`}
         >
           <Clock size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">History</span>
@@ -38,17 +38,13 @@ const BottomNav = ({ activeTab, setActiveTab, onCapture }) => {
         {/* Scanner (central button) */}
         <button
           onClick={() => {
-            setActiveTab('scanner');
             fileInputRef.current?.click();
           }}
           aria-label="Open Scanner"
-          aria-current={activeTab === 'scanner' ? 'page' : undefined}
-          className="relative -mt-6 mx-2"
+          className="relative -mt-8 mx-2"
         >
           <div
-            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform ${
-              activeTab === 'scanner' ? 'bg-emerald-500 scale-110 shadow-emerald-500/30' : 'bg-slate-700 hover:bg-slate-600 shadow-slate-900/50'
-            }`}
+            className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-transform bg-emerald-500 border-4 border-white hover:scale-105 active:scale-95`}
           >
             <Camera size={26} className="text-white" aria-hidden="true" />
           </div>
@@ -61,22 +57,13 @@ const BottomNav = ({ activeTab, setActiveTab, onCapture }) => {
           onChange={onCapture}
           className="hidden" 
         />
-        {/* Leaderboard */}
-        <button
-          onClick={() => setActiveTab('leaderboard')}
-          aria-label="Leaderboard"
-          aria-current={activeTab === 'leaderboard' ? 'page' : undefined}
-          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'leaderboard' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
-        >
-          <Trophy size={22} aria-hidden="true" />
-          <span className="text-[9px] font-medium uppercase tracking-wider">Global</span>
-        </button>
+
         {/* Library */}
         <button
           onClick={() => setActiveTab('library')}
           aria-label="Library"
           aria-current={activeTab === 'library' ? 'page' : undefined}
-          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'library' ? 'text-cyan-400' : 'text-slate-500 hover:text-slate-300'}`}
+          className={`flex flex-col items-center gap-1 p-2 transition-colors ${activeTab === 'library' ? 'text-emerald-600' : 'text-slate-500 hover:text-slate-800'}`}
         >
           <BookOpen size={22} aria-hidden="true" />
           <span className="text-[9px] font-medium uppercase tracking-wider">Library</span>

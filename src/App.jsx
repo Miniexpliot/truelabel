@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Flame, ShieldAlert } from 'lucide-react';
-import ScannerInterface from './components/ScannerInterface';
-import ProcessingState from './components/ProcessingState';
-import ResultsDashboard from './components/NewResultsDashboard';
+import HomeView from './components/HomeView';
 import HistoryView from './components/HistoryView';
 import SettingsView from './components/SettingsView';
-import ProfileView from './components/ProfileView';
-import LeaderboardView from './components/LeaderboardView';
 import LibraryView from './components/LibraryView';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 import BottomNav from './components/BottomNav';
 
 const App = () => {
-  const [activeTab, setActiveTab] = useState('scanner'); // 'scanner', 'history', 'settings', 'profile', 'leaderboard'
+  const [activeTab, setActiveTab] = useState('home'); // 'home', 'history', 'settings', 'library'
   const [appState, setAppState] = useState('idle'); // idle, processing, results, error
   const [scanResult, setScanResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -272,65 +268,11 @@ const App = () => {
 
   return (
     <>
-      {/* Background Animated Orbs */}
-      <div className="bg-orbs">
-        <div className="orb orb-1"></div>
-        <div className="orb orb-2"></div>
-        <div className="orb orb-3"></div>
-      </div>
-
-      <div className="w-full max-w-md mx-auto h-screen flex flex-col bg-transparent text-slate-200 overflow-y-auto overflow-x-hidden p-6 relative z-10 transition-all duration-300">
-
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col relative z-0">
-          {activeTab === 'scanner' && (
-            <>
-              {appState === 'idle' && <ScannerInterface />}
-              {appState === 'processing' && <ProcessingState />}
-              {appState === 'results' && scanResult && (
-                <ResultsDashboard scanResult={scanResult} onReset={handleReset} />
-              )}
-              {appState === 'error' && (
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-6 animation-fade-in gap-4 pb-20">
-                  <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 mb-2 shadow-[0_0_15px_rgba(239,68,68,0.15)]">
-                    <ShieldAlert size={32} />
-                  </div>
-                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">Scan Failed</h3>
-                  <p className="text-sm text-slate-300 max-w-[280px] leading-relaxed">
-                    {errorMessage}
-                  </p>
-                  
-                  <div className="flex flex-col gap-2 w-full max-w-[240px] mt-4">
-                    <button
-                      onClick={handleReset}
-                      className="w-full px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 text-white rounded-xl text-sm font-semibold transition-all active:scale-[0.98]"
-                    >
-                      Try Again
-                    </button>
-                    {lastUploadedFile && (
-                      <button
-                        onClick={() => handleMockFallback(lastUploadedFile)}
-                        className="w-full px-6 py-2.5 bg-transparent hover:bg-slate-800/40 text-cyan-400 hover:text-cyan-300 text-xs font-semibold transition-all"
-                      >
-                        Use Offline Demo Mode
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-
-          {activeTab === 'history' && <HistoryView setActiveTab={setActiveTab} />}
-          {activeTab === 'settings' && <SettingsView />}
-          {activeTab === 'profile' && <ProfileView />}
-          {activeTab === 'leaderboard' && <LeaderboardView />}
-          {activeTab === 'library' && <LibraryView />}
-        </div>
-
-        {/* Global Bottom Navigation - desktop */}
-        <div className="hidden sm:block">
-          <Navbar
+      <div className="w-full h-screen flex mesh-gradient-bg text-slate-800 overflow-hidden relative z-10 transition-all duration-300">
+        
+        {/* Desktop Sidebar */}
+        <div className="hidden sm:block h-[calc(100vh-2rem)] shrink-0 my-4 ml-4 z-50">
+          <Sidebar
             activeTab={activeTab}
             setActiveTab={(tab) => {
               if (appState === 'results') handleReset();
@@ -338,6 +280,53 @@ const App = () => {
             }}
             onCapture={handleImageCapture}
           />
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col relative z-0 h-full overflow-y-auto overflow-x-hidden p-4 md:p-8 items-center">
+          <div className="w-full max-w-5xl mx-auto flex flex-col flex-1 pb-20 sm:pb-8">
+            {appState === 'processing' && <ProcessingState />}
+            {appState === 'results' && scanResult && (
+              <ResultsDashboard scanResult={scanResult} onReset={handleReset} />
+            )}
+            {appState === 'error' && (
+              <div className="flex-1 flex flex-col items-center justify-center text-center p-6 animation-fade-in gap-4 pb-20">
+                <div className="w-16 h-16 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-500 mb-2 shadow-[0_0_15px_rgba(239,68,68,0.15)]">
+                  <ShieldAlert size={32} />
+                </div>
+                <h3 className="text-lg font-bold text-white uppercase tracking-wider">Scan Failed</h3>
+                <p className="text-sm text-slate-300 max-w-[280px] leading-relaxed">
+                  {errorMessage}
+                </p>
+                
+                <div className="flex flex-col gap-2 w-full max-w-[240px] mt-4">
+                  <button
+                    onClick={handleReset}
+                    className="w-full px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-sm font-semibold transition-all shadow-md active:scale-[0.98]"
+                  >
+                    Try Again
+                  </button>
+                  {lastUploadedFile && (
+                    <button
+                      onClick={() => handleMockFallback(lastUploadedFile)}
+                      className="w-full px-6 py-2.5 bg-transparent hover:bg-slate-800/40 text-cyan-400 hover:text-cyan-300 text-xs font-semibold transition-all"
+                    >
+                      Use Offline Demo Mode
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {appState === 'idle' && (
+              <>
+                {activeTab === 'home' && <HomeView setActiveTab={setActiveTab} />}
+                {activeTab === 'history' && <HistoryView setActiveTab={setActiveTab} />}
+                {activeTab === 'settings' && <SettingsView />}
+                {activeTab === 'library' && <LibraryView />}
+              </>
+            )}
+          </div>
         </div>
 
         {/* Mobile Bottom Navigation */}

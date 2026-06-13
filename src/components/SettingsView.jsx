@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Moon, Type, Leaf, ShieldAlert, Download, Hand } from 'lucide-react';
+import { Moon, Type, Leaf, ShieldAlert, Download } from 'lucide-react';
 
 const SettingsView = () => {
   const [settings, setSettings] = useState({
@@ -51,43 +51,72 @@ const SettingsView = () => {
     a.click();
   };
 
-  const Toggle = ({ label, icon: Icon, stateKey, description }) => (
-    <div className="glass-panel p-4 rounded-xl flex items-center justify-between animate-slide-up mb-3">
+  const ToggleRow = ({ label, icon: Icon, stateKey, description }) => (
+    <div className="flex items-center justify-between">
       <div className="flex gap-3 items-center">
-        <div className="p-2 bg-slate-800 rounded-lg">
-          <Icon size={20} className="text-cyan-400" />
+        <div className="p-2 bg-slate-950/5 rounded-xl text-emerald-600">
+          <Icon size={18} />
         </div>
         <div>
-          <h3 className="font-medium text-slate-200">{label}</h3>
-          <p className="text-xs text-slate-500">{description}</p>
+          <h4 className="text-sm font-bold text-slate-800">{label}</h4>
+          <p className="text-xs text-slate-500 font-medium">{description}</p>
         </div>
       </div>
       <button 
         onClick={() => handleToggle(stateKey)}
-        className={`w-12 h-6 rounded-full transition-colors relative ${settings[stateKey] ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-slate-700'}`}
+        className={`w-10 h-5 rounded-full transition-colors relative ${settings[stateKey] ? 'bg-emerald-500' : 'bg-slate-350'}`}
+        aria-label={`Toggle ${label}`}
       >
-        <div className={`w-4 h-4 rounded-full bg-white absolute top-1 transition-transform ${settings[stateKey] ? 'left-7' : 'left-1'}`}></div>
+        <div className={`w-3.5 h-3.5 rounded-full bg-white absolute top-0.5 transition-transform ${settings[stateKey] ? 'left-[22px]' : 'left-[4px]'}`}></div>
       </button>
     </div>
   );
 
   return (
-    <div className="flex-1 flex flex-col pb-28 pt-4 animation-fade-in">
-      <h2 className="text-lg font-semibold text-slate-300 mb-3">Accessibility & Layout</h2>
-      <Toggle label="Dyslexia Font" icon={Type} stateKey="dyslexiaFont" description="Easier to read character shapes" />
-      <Toggle label="High Contrast" icon={Moon} stateKey="highContrast" description="Maximum readability for low vision" />
+    <div className="flex-1 flex flex-col pb-28 pt-4 animation-fade-in px-2 max-w-2xl mx-auto w-full">
+      <div className="mb-6">
+        <h2 className="text-xl font-black text-slate-900 tracking-tight">Settings</h2>
+        <p className="text-xs text-slate-500 mt-0.5">Customize analysis filters & preferences</p>
+      </div>
 
-      <h2 className="text-lg font-semibold text-slate-300 mb-3 mt-2">Personalization Engine</h2>
-      <Toggle label="Vegan Strict Mode" icon={Leaf} stateKey="veganMode" description="Flag all animal by-products aggressively" />
-      <Toggle label="Allergy Siren" icon={ShieldAlert} stateKey="allergyAlerts" description="Extra warnings for common allergens" />
+      <div className="glass-panel p-6 flex flex-col gap-6">
+        
+        {/* Accessibility & Layout */}
+        <div>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Accessibility & Layout</h3>
+          <div className="flex flex-col gap-4">
+            <ToggleRow label="Dyslexia Font" icon={Type} stateKey="dyslexiaFont" description="Easier to read character shapes" />
+            <div className="h-px bg-slate-900/5"></div>
+            <ToggleRow label="High Contrast" icon={Moon} stateKey="highContrast" description="Maximum readability for low vision" />
+          </div>
+        </div>
 
-      <h2 className="text-lg font-semibold text-slate-300 mb-3 mt-2">Data & Privacy</h2>
-      <button 
-        onClick={downloadCSV}
-        className="glass-panel p-4 rounded-xl flex items-center justify-center gap-2 text-cyan-400 hover:bg-slate-800/80 transition-colors animate-slide-up"
-      >
-        <Download size={18} /> Export Data to CSV
-      </button>
+        <div className="h-px bg-slate-900/5"></div>
+
+        {/* Personalization Engine */}
+        <div>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Personalization Engine</h3>
+          <div className="flex flex-col gap-4">
+            <ToggleRow label="Vegan Strict Mode" icon={Leaf} stateKey="veganMode" description="Flag all animal by-products aggressively" />
+            <div className="h-px bg-slate-900/5"></div>
+            <ToggleRow label="Allergy Siren" icon={ShieldAlert} stateKey="allergyAlerts" description="Extra warnings for common allergens" />
+          </div>
+        </div>
+
+        <div className="h-px bg-slate-900/5"></div>
+
+        {/* Data & Export */}
+        <div>
+          <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Data & Privacy</h3>
+          <button 
+            onClick={downloadCSV}
+            className="w-full mt-2 py-3 px-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-600 font-bold transition-all text-xs flex items-center justify-center gap-2"
+          >
+            <Download size={14} /> Export Scan History to CSV
+          </button>
+        </div>
+
+      </div>
     </div>
   );
 };
