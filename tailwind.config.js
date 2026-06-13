@@ -9,6 +9,13 @@ export default {
       animation: {
         'radar-spin': 'spin 3s linear infinite',
         'pulse-slow': 'pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'scan-sweep': 'scanSweep 2s ease-in-out infinite',
+      },
+      keyframes: {
+        scanSweep: {
+          '0%, 100%': { transform: 'translateY(-100%)' },
+          '50%': { transform: 'translateY(100%)' },
+        }
       },
       colors: {
         dark: {

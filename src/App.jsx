@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import BottomNav from './components/BottomNav';
 import ProcessingState from './components/ProcessingState';
 import ResultsDashboard from './components/ResultsDashboard';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 const App = () => {
@@ -17,22 +18,13 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [lastUploadedFile, setLastUploadedFile] = useState(null);
   const [streak, setStreak] = useState(0);
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const savedStreak = localStorage.getItem('true_label_streak');
     if (savedStreak) setStreak(parseInt(savedStreak));
   }, []);
 
-  const handleScroll = (e) => {
-    if (e.target.scrollTop > 50) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
-
-  const showNavbar = activeTab !== 'home' || appState !== 'idle' || scrolled;
+  const showNavbar = activeTab !== 'home' || appState !== 'idle';
 
   const saveToHistoryAndStreak = (result) => {
     try {
@@ -269,7 +261,17 @@ const App = () => {
       }
     } catch (error) {
       console.warn("Backend scan failed:", error);
-      setErrorMessage(error.message || "Failed to communicate with the server. Please check your connection.");
+      let errorMsg = "Failed to communicate with the server. Please check your connection.";
+      if (error.message === "Failed to fetch") {
+        errorMsg = "Server not connected. Please ensure the backend is running.";
+      } else if (error.message.includes("status 503") || error.message.includes("status 502") || error.message.includes("status 504")) {
+        errorMsg = "Server is busy. Please try again in a few moments.";
+      } else if (error.message.includes("status 400") || error.message.includes("status 422")) {
+        errorMsg = "Image is wrong or not clear. Please upload a clear photo of the ingredients.";
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
+      setErrorMessage(errorMsg);
       setAppState('error');
     }
   };
@@ -281,7 +283,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <ErrorBoundary>
       <div className="w-full h-screen flex mesh-gradient-bg text-slate-800 overflow-hidden relative z-10 transition-all duration-300">
         
         {/* Desktop Sidebar */}
@@ -301,10 +303,7 @@ const App = () => {
         </div>
 
         {/* Main Content Area */}
-        <div 
-          onScroll={handleScroll}
-          className="flex-1 flex flex-col relative z-0 h-full overflow-y-auto overflow-x-hidden p-4 md:p-8 items-center"
-        >
+        <div className="flex-1 flex flex-col relative z-0 h-full overflow-y-auto overflow-x-hidden p-4 md:p-8 items-center">
           <div className="w-full max-w-5xl mx-auto flex flex-col flex-1 pb-20 sm:pb-8">
             {appState === 'processing' && <ProcessingState />}
             {appState === 'results' && scanResult && (
@@ -362,7 +361,7 @@ const App = () => {
         />
 
       </div>
-    </>
+    </ErrorBoundary>
   );
 };
 
